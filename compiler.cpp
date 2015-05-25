@@ -1,12 +1,20 @@
+/**
+ *  Copyleft (C) 2015 Maurizio Dominici <dominicimaurizio@gmail.com>
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  version 2 as published by the Free Software Foundation.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> //http://man7.org/linux/man-pages/man3/getopt.3.html
+#include <unistd.h>
 #include <iostream>
 #include <string.h>
 
-const char* default_board = "arduino:avr:nano";
-const char* default_cpu   = ":cpu=atmega328";
-const char* default_port  = "/dev/ttyUSB0";
+// edit these values accorging to your preferences
+char default_board[25] = "arduino:avr:nano";
+char default_cpu[25]   = ":cpu=atmega328";
+char default_port[25]  = "/dev/ttyUSB0";
 
 int main(int argc, char** argv){
     int option_char;
@@ -79,13 +87,14 @@ int main(int argc, char** argv){
         return 1;
     }
     if(!board_flag){
-        board_value = (char *)"arduino:avr:nano";
+        board_value = *(&default_board);
     }
     if(!cpu_flag){
-        cpu_value = (char *)":cpu=atmega328";
+        cpu_value = *(&default_cpu);
+
     }
     if(!port_flag){
-        port_value = (char *)"/dev/ttyUSB0";
+        port_value = *(&default_port);
     }
 
     char cmd[350];
@@ -97,6 +106,6 @@ int main(int argc, char** argv){
     strcat(cmd, " --upload ");
     strcat(cmd, upload_value);
     strcat(cmd, "\0");
-    //printf("COMMAND: %s\n", cmd);
     std::cout << system(cmd);
-    }
+    // printf("COMMAND: %s\n", cmd);
+}

@@ -107,6 +107,6 @@ int main(int argc, char** argv){
     strcat(cmd, " --upload ");
     strcat(cmd, upload_value);
     strcat(cmd, "\0");
-    std::cout << system(cmd);
+    std::cout << system(cmd) << std::endl;
     // printf("COMMAND: %s\n", cmd);
 }

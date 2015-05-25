@@ -12,8 +12,8 @@
 #include <string.h>
 
 // edit these values accorging to your preferences
-char default_board[25] = "arduino:avr:nano";
-char default_cpu[25]   = ":cpu=atmega328";
+char default_board[25] = "nano";
+char default_cpu[25]   = "atmega328";
 char default_port[25]  = "/dev/ttyUSB0";
 
 int main(int argc, char** argv){
@@ -98,8 +98,9 @@ int main(int argc, char** argv){
     }
 
     char cmd[350];
-    strcpy(cmd, "arduino --board ");
+    strcpy(cmd, "arduino --board arduino:avr:");
     strcat(cmd, board_value);
+    strcat(cmd, ":cpu=");
     strcat(cmd, cpu_value);
     strcat(cmd, " --port ");
     strcat(cmd, port_value);

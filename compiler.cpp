@@ -12,9 +12,12 @@
 #include <string.h>
 
 // edit these values accorging to your preferences
-char default_board[25] = "nano";
-char default_cpu[25]   = "atmega328";
-char default_port[25]  = "/dev/ttyUSB0";
+char default_board[25]   = "nano";
+char default_cpu[25]     = "atmega328";
+char default_port[25]    = "/dev/ttyUSB0";
+char empty_location[100] = "~/Documents/Programming/Arduino/sketches/empty/empty.ino";
+
+void compile(char *board, char *cpu, char *port, char *upload);
 
 int main(int argc, char** argv){
     int option_char;
@@ -22,12 +25,14 @@ int main(int argc, char** argv){
 	bool cpu_flag      = false;
 	bool port_flag     = false;
 	bool upload_flag   = false;
+    bool empty_flag    = false;
 	char *board_value  = NULL;
 	char *cpu_value    = NULL;
 	char *port_value   = NULL;
 	char *upload_value = NULL;
+	char *empty_value  = NULL;
 
-    while((option_char = getopt(argc, argv, "b:c:p:u:")) != EOF){
+    while((option_char = getopt(argc, argv, "b:c:p:u:e")) != EOF){
 		switch(option_char) {
             case('b') :
 				board_value = optarg;
@@ -47,6 +52,11 @@ int main(int argc, char** argv){
             case('u') :
                 upload_value = optarg;
                 upload_flag = true;
+                break;
+
+            case('e'):
+                empty_value = optarg;
+                empty_flag = true;
                 break;
 
             case ('?') :
@@ -82,6 +92,12 @@ int main(int argc, char** argv){
         }
     }
 
+    if(empty_flag){
+        upload_value = *(&empty_location);
+        upload_flag  = true;
+        printf("Writing EMPTY sketch: %s\n", upload_value);
+    }
+
     if(!upload_flag){
         printf("The Upload option (-u) is mandatory\n");
         return 1;
@@ -96,17 +112,20 @@ int main(int argc, char** argv){
     if(!port_flag){
         port_value = *(&default_port);
     }
+    compile(board_value, cpu_value, port_value, upload_value);
+}
 
+void compile(char *board, char *cpu, char *port, char *upload){
     char cmd[350];
     strcpy(cmd, "arduino --board arduino:avr:");
-    strcat(cmd, board_value);
+    strcat(cmd, board);
     strcat(cmd, ":cpu=");
-    strcat(cmd, cpu_value);
+    strcat(cmd, cpu);
     strcat(cmd, " --port ");
-    strcat(cmd, port_value);
+    strcat(cmd, port);
     strcat(cmd, " --upload ");
-    strcat(cmd, upload_value);
+    strcat(cmd, upload);
     strcat(cmd, "\0");
     std::cout << system(cmd) << std::endl;
-    // printf("COMMAND: %s\n", cmd);
+    //printf("COMMAND: %s\n", cmd);
 }

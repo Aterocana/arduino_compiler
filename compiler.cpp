@@ -12,10 +12,10 @@
 #include <string.h>
 
 // edit these values accorging to your preferences
-char default_board[25]   = "nano";
-char default_cpu[25]     = "atmega328";
-char default_port[25]    = "/dev/ttyUSB0";
-char empty_location[100] = "~/Documents/Programming/Arduino/sketches/empty/empty.ino";
+char default_board[25]   = "nano";  // default board name
+char default_cpu[25]     = "atmega328"; // default cpu
+char default_port[25]    = "/dev/ttyUSB0"; // default serial port
+char empty_location[100] = "~/Documents/Programming/Arduino/sketches/empty/empty.ino"; //location of empty sketch (it should be placed in a directory with its same name)
 
 void compile(char *board, char *cpu, char *port, char *upload);
 
